@@ -57,10 +57,14 @@ class BossBar : JavaPlugin() {
     }
 
     private fun testDB() {
-        val db = DatabaseRegistry.players
-        val playerData = PlayerData(UUID.randomUUID(), ChatColor.RED.ordinal)
-        db.insert(playerData)
-        db.save(playerData)
-//        db.getAll(false).forEach(::println)
+        try {
+            val db = DatabaseRegistry.players
+            val playerData = PlayerData(UUID.randomUUID(), ChatColor.RED.ordinal, UUID.randomUUID())
+            db.insert(playerData)
+            db.save(playerData)
+            db.getAll(false).forEach(::println)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
