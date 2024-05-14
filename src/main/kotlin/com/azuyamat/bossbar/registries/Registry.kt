@@ -1,17 +1,8 @@
 package com.azuyamat.bossbar.registries
 
-import org.reflections.Reflections
+import org.bukkit.plugin.java.JavaPlugin
 
-abstract class Registry<K>(
-    private val `package`: String
-) {
-
-    abstract fun register()
-
-    fun reflect(`class`: Class<K>): List<K> {
-        val reflections = Reflections(`package`)
-        return reflections.getSubTypesOf(`class`).toList().mapNotNull {
-            it.constructors[0].newInstance() as? K
-        }
-    }
+interface Registry {
+    fun init(plugin: JavaPlugin)
+    fun teardown()
 }

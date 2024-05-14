@@ -1,6 +1,7 @@
 package com.azuyamat.bossbar.utils
 
 import com.azuyamat.bossbar.MAIN_COLOR
+import com.azuyamat.bossbar.data.enums.ChatColor
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
@@ -18,3 +19,7 @@ fun mm(text: String): Component {
 }
 
 operator fun String.not() = mm(this)
+
+fun String.color(color: ChatColor): Component {
+    return mm(mm.stripTags(this)).color(color.color)
+}
