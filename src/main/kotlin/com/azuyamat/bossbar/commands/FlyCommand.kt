@@ -1,6 +1,5 @@
 package com.azuyamat.bossbar.commands
 
-import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
@@ -11,7 +10,7 @@ import org.bukkit.entity.Player
 @CommandAlias("fly")
 @CommandPermission("bossbar.command.fly.use")
 @Description("Toggle fly mode.")
-class FlyCommand : BaseCommand() {
+class FlyCommand : Command() {
 
     @Default
     fun onCommand(player: Player) {

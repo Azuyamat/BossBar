@@ -10,7 +10,7 @@ import java.util.*
 data class PlayerData(
     @PrimaryKey val uuid: UUID,
     @Column(ColumnType.INT) val chatColor: Int = 0,
-    @Column val islandUUID: UUID? = null
+    @Column var islandUUID: UUID? = null
 ) : Data<UUID> {
     override fun getId(): UUID {
         return this.uuid

@@ -1,17 +1,21 @@
 package com.azuyamat.bossbar.data
 
 import com.azuyamat.bossbar.data.tables.Data
+import com.azuyamat.bossbar.data.tables.IslandData
 import me.outspending.munch.Munch
 import me.outspending.munch.connection.MunchConnection
 import me.outspending.munch.connection.MunchDatabase
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.*
 import kotlin.reflect.KClass
+import kotlin.reflect.KFunction3
 
 typealias Database<K, V> = MunchDatabase<K, V>
 
-class DatabaseHandler<K: Data<V>, V: Any>(
+class DatabaseHandler<K : Data<V>, V : Any>(
     `class`: KClass<K>,
-    private val databaseName: String
+    private val databaseName: String,
+    private val defaultInstance: (V) -> K
 ) {
     private val munch = Munch.create(`class`).process<V>()
     private val database = MunchConnection.create(munch)
@@ -68,9 +72,11 @@ class DatabaseHandler<K: Data<V>, V: Any>(
         insertIntoDB(obj)
     }
 
-    fun update(obj: K) {
-        cache[obj.getId()] = obj
-        updateInDB(obj)
+    fun update(key: V, action: (K) -> Unit) {
+        val obj = get(key) ?: getDefaultValue(key)
+        action(obj)
+        cache[key] = obj
+        replaceInDB(obj)
     }
 
     fun delete(obj: K) {
@@ -93,5 +99,16 @@ class DatabaseHandler<K: Data<V>, V: Any>(
             save(value)
         }
         cache.clear()
+    }
+
+    fun getMatching(predicate: (K) -> Boolean): List<K> {
+        val fromDB = database.getAllDataWithFilter(predicate)
+        val fromCache = cache.values.filter(predicate)
+        val all = (fromDB ?: mutableListOf()) + fromCache
+        return all.distinct()
+    }
+
+    private fun getDefaultValue(key: V): K {
+        return defaultInstance.invoke(key)
     }
 }
