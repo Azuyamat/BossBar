@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Default
 import co.aikar.commands.annotation.Description
 import com.azuyamat.bossbar.commands.Command
-import com.azuyamat.bossbar.utils.not
+import com.azuyamat.bossbar.utils.fromConfig
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 
@@ -17,6 +17,6 @@ class GMSCommand : Command() {
     @Default
     fun onCommand(player: Player) {
         player.gameMode = GameMode.SURVIVAL
-        player.sendMessage(!"<pre> Set gamemode to <primary>survival")
+        player.sendMessage("gamemode.change.message".fromConfig("survival"))
     }
 }

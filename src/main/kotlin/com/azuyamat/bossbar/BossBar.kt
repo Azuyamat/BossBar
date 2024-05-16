@@ -1,8 +1,9 @@
 package com.azuyamat.bossbar
 
 import co.aikar.commands.PaperCommandManager
-import com.azuyamat.bossbar.data.tables.IslandData
+import com.azuyamat.bossbar.providers.IslandProvider
 import com.azuyamat.bossbar.registries.*
+import com.azuyamat.bossbar.verification.ServerVerification
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -17,6 +18,8 @@ class BossBar : JavaPlugin() {
     lateinit var commandManager: PaperCommandManager
         private set
     private val registries = mutableListOf<Registry>()
+    private val serverVerification = ServerVerification()
+    val dropDatabase = false
 
     override fun onEnable() {
         commandManager = PaperCommandManager(this)
@@ -27,7 +30,8 @@ class BossBar : JavaPlugin() {
                 DatabaseRegistry,
                 CommandRegistry,
                 ListenerRegistry,
-                CollectorRegistry
+                CollectorRegistry,
+                IslandProvider,
             )
         )
         registries.forEach {
@@ -38,7 +42,12 @@ class BossBar : JavaPlugin() {
             logger.info("Registered ${it::class.simpleName} in $initTime")
         }
 
-        insertDummyIslands()
+        serverVerification.logBefore(logger)
+        // Insert code below
+
+
+        // Insert code above
+        serverVerification.logAfter(logger)
     }
 
     override fun onDisable() {
@@ -48,15 +57,6 @@ class BossBar : JavaPlugin() {
                 it.teardown()
             }
             logger.info("Unregistered ${it::class.simpleName} in $teardownTime")
-        }
-    }
-
-    private fun insertDummyIslands() {
-        val isEmpty = DatabaseRegistry.islands.getAllFromDB().isEmpty()
-        if (isEmpty) {
-            for (i in 1..10) {
-                DatabaseRegistry.islands.insert(IslandData(name = "Island$i"))
-            }
         }
     }
 }

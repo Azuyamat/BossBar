@@ -66,6 +66,7 @@ class Collector(
     }
 
     fun cancel() {
+        player.sendMessage("collector.cancel.message".fromConfig())
         CollectorRegistry.removeCollector(player.uniqueId)
         onCancel()
     }

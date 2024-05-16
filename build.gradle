@@ -9,6 +9,7 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         name = "papermc-repo"
         url = "https://repo.papermc.io/repository/maven-public/"
@@ -34,7 +35,8 @@ dependencies {
     implementation "net.kyori:adventure-api:4.17.0"
     api "org.reflections:reflections:0.10.2"
     implementation "co.aikar:acf-paper:0.5.1-SNAPSHOT"
-    implementation "com.github.InvoiceMC:Munch:dd2bfcbc82"
+//    implementation "com.github.InvoiceMC:Munch:451a92a70b"
+    implementation "org.github.invoicemc:Munch:1.0-SNAPSHOT"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.24"
 }
 

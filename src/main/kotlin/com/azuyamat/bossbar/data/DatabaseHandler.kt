@@ -2,10 +2,13 @@ package com.azuyamat.bossbar.data
 
 import com.azuyamat.bossbar.data.tables.Data
 import com.azuyamat.bossbar.data.tables.IslandData
+import com.azuyamat.bossbar.instance
+import com.azuyamat.bossbar.utils.createIfNotExists
 import me.outspending.munch.Munch
 import me.outspending.munch.connection.MunchConnection
 import me.outspending.munch.connection.MunchDatabase
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction3
@@ -22,8 +25,12 @@ class DatabaseHandler<K : Data<V>, V : Any>(
     private val cache = mutableMapOf<V, K>()
 
     fun init(plugin: JavaPlugin) {
-        val path = plugin.dataFolder.resolve("$databaseName.db")
-        database.connect(path)
+        val file = plugin.dataFolder.resolve("$databaseName.db")
+        file.createIfNotExists()
+        database.connect(file)
+        if (instance.dropDatabase) {
+            database.deleteTable()
+        }
         database.createTable()
     }
 
@@ -106,6 +113,10 @@ class DatabaseHandler<K : Data<V>, V : Any>(
         val fromCache = cache.values.filter(predicate)
         val all = (fromDB ?: mutableListOf()) + fromCache
         return all.distinct()
+    }
+
+    fun drop() {
+        database.deleteTable()
     }
 
     private fun getDefaultValue(key: V): K {

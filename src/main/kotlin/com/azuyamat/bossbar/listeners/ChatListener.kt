@@ -31,7 +31,7 @@ class ChatListener : Listener {
         }
         event.renderer { player, _, _, _ ->
             val data = DatabaseRegistry.players.get(player.uniqueId) ?: PlayerData(player.uniqueId)
-            val color = ChatColor.entries[data.chatColor]
+            val color = data.chatColor
             val textMessage = content.color(color)
             (!"<primary>${player.name}</primary><gray>: ").append(textMessage)
         }

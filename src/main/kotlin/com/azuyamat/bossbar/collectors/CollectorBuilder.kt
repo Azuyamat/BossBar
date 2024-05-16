@@ -1,5 +1,6 @@
 package com.azuyamat.bossbar.collectors
 
+import com.azuyamat.bossbar.utils.not
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 
@@ -38,5 +39,26 @@ class CollectorBuilder(
         return Collector(player, meta.apply {
             timeout = System.currentTimeMillis() + timeoutDuration
         })
+    }
+
+    companion object {
+        fun areYouSure(onConfirm: () -> Unit, onCancel: () -> Unit = {}): CollectorBuilder {
+            return CollectorBuilder(
+                !"<red><bold>DANGER</bold></red>",
+                !"<bold:false><gray>Type <green>'yes'</green> to confirm or <red>'no'</red> to cancel."
+            ).verifyValue {
+                when (it.lowercase()) {
+                    "yes" -> Collector.ValidationResult.valid()
+                    "no" -> Collector.ValidationResult.valid()
+                    else -> Collector.ValidationResult.invalid("Invalid input.")
+                }
+            }.onReceive {
+                if (it.equals("yes", true)) {
+                    onConfirm()
+                } else {
+                    onCancel()
+                }
+            }
+        }
     }
 }

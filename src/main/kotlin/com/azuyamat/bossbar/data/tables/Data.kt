@@ -1,5 +1,7 @@
 package com.azuyamat.bossbar.data.tables
 
-interface Data<K : Any> {
+import java.io.Serializable
+
+interface Data<K : Any> : Serializable {
     fun getId(): K
 }
