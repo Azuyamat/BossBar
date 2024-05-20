@@ -8,6 +8,7 @@ import com.azuyamat.bossbar.verification.ServerVerification
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.time.measureTime
+import com.azuyamat.mccollector.CollectorRegistry as MCC
 
 val MAIN_COLOR = TextColor.color(255, 179, 71)
 
@@ -22,6 +23,8 @@ class BossBar : JavaPlugin() {
 
     override fun onEnable() {
         commandManager = PaperCommandManager(this)
+
+        MCC.init(this)
 
         registries.addAll(listOf(
                 ConfigRegistry,

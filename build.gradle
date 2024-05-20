@@ -38,6 +38,7 @@ dependencies {
 //    implementation "com.github.InvoiceMC:Munch:451a92a70b"
     implementation "org.github.invoicemc:Munch:1.0-SNAPSHOT"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.24"
+    implementation "com.github.Azuyamat:MCCollector:13b7cbbddc"
 }
 
 def targetJavaVersion = 17
